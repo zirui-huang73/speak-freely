@@ -12,6 +12,10 @@ Design: `docs/plans/2026-11-22-stop-stuttering-app-design.md`.
 
 Verify with test, build, and lint before committing.
 
+This machine's npm registry is an internal mirror that GitHub Actions cannot reach. After any `npm install`,
+make sure every `resolved` URL in `package-lock.json` points to `https://registry.npmjs.org/` before committing
+(run `npm config get registry` to see the mirror prefix, then replace it with sed). Never commit the mirror hostname.
+
 ## Conventions
 
 - All UI text and content in English. Affirmations: present tense, positive, short; no negative statements.
