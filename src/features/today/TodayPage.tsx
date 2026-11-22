@@ -3,8 +3,11 @@ import { Link } from 'react-router-dom'
 import { CheckIcon, LockIcon, MoonIcon, PlayIcon } from '../../app/icons'
 import { Card, PageHeader } from '../../app/ui'
 import { CAPRIO_QUOTE, LOCKED_SLOTS } from '../../content/affirmations'
+import { CRUTCHES } from '../../content/crutches'
+import { drillPath } from '../../lib/crutches'
 import { fillName } from '../../lib/library'
 import { dayKey, lastDays, reviewDue, SLOTS, streak, suggestedSlot } from '../../lib/practice'
+import { useCrutches } from '../crutches/crutchContext'
 import { useLibrary } from '../library/libraryContext'
 import { SLOT_INFO, usePractice } from '../practice/practiceContext'
 import { useSettings } from '../settings/settingsContext'
@@ -21,12 +24,14 @@ export function TodayPage() {
   const { settings } = useSettings()
   const { data, cardById } = useLibrary()
   const { log, markReviewed } = usePractice()
+  const { data: crutchData } = useCrutches()
   const [now] = useState(() => Date.now())
   const name = settings.name.trim()
   const today = log.days[dayKey(now)] ?? {}
   const suggested = suggestedSlot(now)
   const days = lastDays(log, now)
   const s = streak(log, now)
+  const week = CRUTCHES.find((c) => c.n === crutchData.week)!
 
   return (
     <>
@@ -106,6 +111,20 @@ export function TodayPage() {
             <MoonIcon className="size-5 text-indigo-300" /> Sleep Playback
           </Link>
         </div>
+
+        <Link
+          to={drillPath(week.n)}
+          className="flex items-center gap-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm hover:border-teal-600 dark:border-slate-800 dark:bg-slate-900"
+        >
+          <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-teal-50 text-sm font-semibold text-teal-700 dark:bg-teal-950 dark:text-teal-300">
+            C-{week.n}
+          </span>
+          <span className="min-w-0 flex-1">
+            <span className="block text-xs font-medium text-slate-500">Crutch of the week</span>
+            <span className="block truncate font-medium">{week.name}</span>
+          </span>
+          <span className="text-sm font-medium text-teal-700 dark:text-teal-300">Drill</span>
+        </Link>
 
         <Card>
           <div className="flex items-baseline justify-between">

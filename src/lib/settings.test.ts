@@ -26,6 +26,8 @@ describe('normalizeSettings', () => {
       theme: 'dark' as const,
       sleepVolume: 0.3,
       sleepMinutes: 30,
+      generalPlan: 'Pronounce – Smile – Stop',
+      pressurePlan: 'Hum – Link – Stop',
     }
     expect(normalizeSettings(s)).toEqual(s)
   })

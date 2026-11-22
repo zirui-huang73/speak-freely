@@ -12,6 +12,8 @@ export interface Settings {
   theme: Theme
   sleepVolume: number
   sleepMinutes: number
+  generalPlan: string
+  pressurePlan: string
 }
 
 export const SLEEP_MINUTES = [30, 60, 0] as const
@@ -25,7 +27,11 @@ export const DEFAULT_SETTINGS: Settings = {
   theme: 'system',
   sleepVolume: 0.15,
   sleepMinutes: 0,
+  generalPlan: 'Joy – Smile – Stop',
+  pressurePlan: 'Slow – Link – Stop',
 }
+
+const text = (v: unknown, fallback: string) => (typeof v === 'string' && v.trim() ? v : fallback)
 
 const KEY = 'settings'
 
@@ -48,6 +54,8 @@ export function normalizeSettings(raw: unknown): Settings {
         ? clamp(r.sleepVolume, 0.02, 1)
         : DEFAULT_SETTINGS.sleepVolume,
     sleepMinutes: SLEEP_MINUTES.includes(r.sleepMinutes as 0) ? (r.sleepMinutes as number) : DEFAULT_SETTINGS.sleepMinutes,
+    generalPlan: text(r.generalPlan, DEFAULT_SETTINGS.generalPlan),
+    pressurePlan: text(r.pressurePlan, DEFAULT_SETTINGS.pressurePlan),
   }
 }
 

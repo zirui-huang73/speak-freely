@@ -54,6 +54,35 @@ it('renders recordings, recorder intro and sleep pages without recordings', asyn
   expect(el.textContent).toContain('No recording yet.')
 })
 
+it('renders the crutches page and all three drills', async () => {
+  const el = document.createElement('div')
+  document.body.append(el)
+  window.location.hash = '#/crutches'
+  await act(async () => createRoot(el).render(<App />))
+  await wait(() => !!el.textContent?.includes('Crutch of the week'))
+  expect(el.textContent).toContain('It takes four things to stutter')
+  expect(el.textContent).toContain('No crutch at all')
+
+  const click = async (label: string) => {
+    const b = [...el.querySelectorAll('button')].find((x) => x.textContent?.trim() === label)!
+    await act(async () => b.click())
+  }
+
+  window.location.hash = '#/drill/words?c=3'
+  await wait(() => !!el.textContent?.includes('Skip or spell it'))
+  await click('Done, next')
+  expect(el.textContent).toContain('1 done this round')
+
+  window.location.hash = '#/drill/linking'
+  await wait(() => !!el.textContent?.includes('Pressure plan'))
+  expect(el.textContent).toContain('Slow – Link – Stop')
+  expect(el.textContent).toContain('‿')
+
+  window.location.hash = '#/drill/free'
+  await wait(() => !!el.textContent?.includes('No crutch at all'))
+  expect(el.textContent).toContain('60s')
+})
+
 it('runs a full affirmation session and marks it done on Today', async () => {
   const el = document.createElement('div')
   document.body.append(el)
