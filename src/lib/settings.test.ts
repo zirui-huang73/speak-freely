@@ -17,7 +17,7 @@ describe('normalizeSettings', () => {
   })
 
   it('keeps valid values', () => {
-    const s = { name: 'Zirui', voiceURI: 'Samantha', rate: 1.1, reps: 30, theme: 'dark' as const }
+    const s = { name: 'Zirui', voiceURI: 'Samantha', rate: 1.1, reps: 30, deckReps: 5, theme: 'dark' as const }
     expect(normalizeSettings(s)).toEqual(s)
   })
 })
