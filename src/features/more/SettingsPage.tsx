@@ -19,15 +19,16 @@ function BetterVoicesHelp() {
       <summary className="cursor-pointer font-medium">Voices sound robotic? Get natural ones (free)</summary>
       <ul className="mt-2 list-disc space-y-1.5 pl-5">
         <li>
-          <b>Mac:</b> System Settings → Accessibility → Spoken Content → System voice → Manage Voices… → English →
-          download a <i>Premium</i> or <i>Enhanced</i> voice (e.g. Ava, Zoe, Evan). Then restart the browser.
-        </li>
-        <li>
-          <b>iPhone:</b> Settings → Accessibility → Spoken Content → Voices → English → download a <i>Premium</i> or{' '}
-          <i>Enhanced</i> voice. Then reopen Safari.
+          <b>Mac with Chrome or Edge:</b> System Settings → Accessibility → Spoken Content → System voice → Manage
+          Voices… → English → download a <i>Premium</i> or <i>Enhanced</i> voice (e.g. Ava, Zoe, Evan). Then restart
+          the browser.
         </li>
         <li>
           <b>Microsoft Edge</b> (desktop) has very natural online voices built in, listed as “… Online (Natural)”.
+        </li>
+        <li>
+          <b>iPhone, iPad and Safari on Mac:</b> Apple does not let websites use downloaded voices, so only the basic
+          voices appear here.
         </li>
       </ul>
     </details>
