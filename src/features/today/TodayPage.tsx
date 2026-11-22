@@ -7,6 +7,7 @@ import { CRUTCHES } from '../../content/crutches'
 import { drillPath } from '../../lib/crutches'
 import { fillName } from '../../lib/library'
 import { dayKey, lastDays, reviewDue, SLOTS, streak, suggestedSlot } from '../../lib/practice'
+import { planOf } from '../../lib/settings'
 import { useCrutches } from '../crutches/crutchContext'
 import { useLibrary } from '../library/libraryContext'
 import { SLOT_INFO, usePractice } from '../practice/practiceContext'
@@ -109,6 +110,17 @@ export function TodayPage() {
             className="flex items-center gap-3 rounded-2xl bg-slate-900 p-4 font-medium text-slate-100 shadow-sm hover:bg-slate-800 dark:bg-slate-800"
           >
             <MoonIcon className="size-5 text-indigo-300" /> Sleep Playback
+          </Link>
+        </div>
+
+        <div className="flex items-center gap-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <div className="min-w-0 flex-1 text-sm">
+            <p className="text-xs font-medium text-slate-500">My Speech Plan</p>
+            <p className="truncate font-medium">{planOf(settings, 'generalPlan')}</p>
+            <p className="truncate font-medium text-indigo-700 dark:text-indigo-300">{planOf(settings, 'pressurePlan')}</p>
+          </div>
+          <Link to="/more/plan?show=generalPlan" className="text-sm font-medium text-teal-700 dark:text-teal-300">
+            Show
           </Link>
         </div>
 

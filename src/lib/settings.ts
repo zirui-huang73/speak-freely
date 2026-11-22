@@ -49,7 +49,9 @@ const oneOf = <T>(options: readonly T[], v: unknown, fallback: T): T => (options
 const numIn = (v: unknown, min: number, max: number, fallback: number) =>
   typeof v === 'number' && Number.isFinite(v) ? Math.min(max, Math.max(min, v)) : fallback
 
-const text = (v: unknown, fallback: string) => (typeof v === 'string' && v.trim() ? v : fallback)
+const text = (v: unknown, fallback: string) => (typeof v === 'string' ? v : fallback)
+
+export const planOf = (s: Settings, key: 'generalPlan' | 'pressurePlan') => s[key].trim() || DEFAULT_SETTINGS[key]
 
 const KEY = 'settings'
 

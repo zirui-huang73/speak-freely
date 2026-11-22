@@ -9,8 +9,10 @@ import { LinkingDrillPage } from './features/crutches/LinkingDrillPage'
 import { WordDrillPage } from './features/crutches/WordDrillPage'
 import { HypnosisPage } from './features/hypnosis/HypnosisPage'
 import { LibraryProvider } from './features/library/LibraryProvider'
+import { DataPage } from './features/more/DataPage'
 import { MorePage } from './features/more/MorePage'
 import { SettingsPage } from './features/more/SettingsPage'
+import { SpeechPlanPage } from './features/more/SpeechPlanPage'
 import { PracticeProvider } from './features/practice/PracticeProvider'
 import { SessionPage } from './features/practice/SessionPage'
 import { RecorderPage } from './features/recordings/RecorderPage'
@@ -34,6 +36,8 @@ export default function App() {
                   <Route path="hypnosis" element={<HypnosisPage />} />
                   <Route path="more" element={<MorePage />} />
                   <Route path="more/settings" element={<SettingsPage />} />
+                  <Route path="more/plan" element={<SpeechPlanPage />} />
+                  <Route path="more/data" element={<DataPage />} />
                   <Route path="recordings" element={<RecordingsPage />} />
                 </Route>
                 <Route path="deck" element={<DeckPage />} />

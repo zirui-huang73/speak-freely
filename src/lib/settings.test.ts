@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { DEFAULT_SETTINGS, loadSettings, normalizeSettings, saveSettings } from './settings'
+import { DEFAULT_SETTINGS, loadSettings, normalizeSettings, planOf, saveSettings } from './settings'
 
 describe('normalizeSettings', () => {
   it('returns defaults for missing or invalid input', () => {
@@ -42,6 +42,15 @@ describe('normalizeSettings', () => {
     expect(
       normalizeSettings({ hypnosisMode: 'nap', hypnosisMinutes: 15, hypnosisRate: 3, noise: 'pink', noiseVolume: -1 }),
     ).toMatchObject({ hypnosisMode: 'bedtime', hypnosisMinutes: 10, hypnosisRate: 1.2, noise: 'brown', noiseVolume: 0.02 })
+  })
+})
+
+describe('planOf', () => {
+  it('falls back to the default plan while a field is empty', () => {
+    const s = normalizeSettings({ generalPlan: '  ', pressurePlan: 'Hum – Link – Stop' })
+    expect(s.generalPlan).toBe('  ')
+    expect(planOf(s, 'generalPlan')).toBe(DEFAULT_SETTINGS.generalPlan)
+    expect(planOf(s, 'pressurePlan')).toBe('Hum – Link – Stop')
   })
 })
 

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { LINKED_SENTENCES } from '../../content/crutches'
 import { fillName } from '../../lib/library'
 import { parseSentence, pickOther } from '../../lib/crutches'
+import { planOf } from '../../lib/settings'
 import { useSettings } from '../settings/settingsContext'
 import { useCrutches } from './crutchContext'
 import { DrillShell, primaryBtn, secondaryBtn } from './DrillShell'
@@ -73,7 +74,7 @@ export function LinkingDrillPage() {
         </div>
       </div>
       <p className="mt-2 text-center text-lg font-semibold tracking-wide text-teal-700 dark:text-teal-300">
-        {plan === 'general' ? settings.generalPlan : settings.pressurePlan}
+        {planOf(settings, plan === 'general' ? 'generalPlan' : 'pressurePlan')}
       </p>
 
       <div

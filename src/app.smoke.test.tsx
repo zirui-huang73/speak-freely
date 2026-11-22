@@ -105,6 +105,28 @@ it('starts and ends a hypnosis session', async () => {
   expect(el.textContent).not.toContain('min left')
 })
 
+it('edits the speech plan, shows the card, and renders export/import', async () => {
+  const el = document.createElement('div')
+  document.body.append(el)
+  window.location.hash = '#/more/plan'
+  await act(async () => createRoot(el).render(<App />))
+  await wait(() => !!el.textContent?.includes('My Speech Plan'))
+
+  const click = async (label: string) => {
+    const b = [...el.querySelectorAll('button')].find((x) => x.textContent?.trim() === label)!
+    await act(async () => b.click())
+  }
+  await click('Hum – Link – Stop')
+  expect((el.querySelector('input[aria-label="Pressure plan"]') as HTMLInputElement).value).toBe('Hum – Link – Stop')
+  await act(async () => [...el.querySelectorAll('button')].filter((b) => b.textContent === 'Show as card')[1].click())
+  await wait(() => !!el.textContent?.includes('Tap to switch plans'))
+  expect(el.textContent).toContain('Hum')
+
+  window.location.hash = '#/more/data'
+  await wait(() => !!el.textContent?.includes('Export backup'))
+  expect(el.textContent).toContain('Choose backup file')
+})
+
 it('runs a full affirmation session and marks it done on Today', async () => {
   const el = document.createElement('div')
   document.body.append(el)
