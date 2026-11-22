@@ -93,10 +93,15 @@ Not from the book (the book gives principles only). Labelled as such in the app.
   relaxation head to toe → deepening countdown 10→1 (staircase) → Caprio quote +
   today's 10 affirmations, each followed by a pause to repeat silently → visualization
   of speaking calmly to a group → ending.
+- 20-minute version adds more body parts, a peaceful-place section, and says each affirmation twice.
+- Pauses are stretched automatically so the session lasts about the chosen length.
+- Runs as a full-screen overlay started directly by the Start tap (iOS requires speech/audio to start from a tap).
 - Screen Wake Lock + near-black screen with dim pause button (TTS stops on lock).
 - Optional generated white/brown noise, adjustable volume.
-- Adjustable voice, rate, pause length.
+- Adjustable speaking speed; voice comes from Settings.
+- Completing a session marks Bedtime (bedtime mode) or Morning/Midday (daytime mode) on Today.
 - Safety notice: do not use while driving or when attention is needed.
+- iOS/Safari only expose basic voices to websites (downloaded Premium/Enhanced voices are not available).
 
 ## 6. More
 

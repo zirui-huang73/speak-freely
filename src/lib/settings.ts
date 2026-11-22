@@ -1,3 +1,4 @@
+import { HYPNOSIS_LENGTHS, type HypnosisMode } from '../content/hypnosis'
 import { getValue, setValue } from './storage'
 
 export const THEMES = ['system', 'light', 'dark'] as const
@@ -14,9 +15,16 @@ export interface Settings {
   sleepMinutes: number
   generalPlan: string
   pressurePlan: string
+  hypnosisMode: HypnosisMode
+  hypnosisMinutes: number
+  hypnosisRate: number
+  noise: NoiseType
+  noiseVolume: number
 }
 
 export const SLEEP_MINUTES = [30, 60, 0] as const
+export const NOISE_TYPES = ['off', 'brown', 'white'] as const
+export type NoiseType = (typeof NOISE_TYPES)[number]
 
 export const DEFAULT_SETTINGS: Settings = {
   name: '',
@@ -29,7 +37,17 @@ export const DEFAULT_SETTINGS: Settings = {
   sleepMinutes: 0,
   generalPlan: 'Joy – Smile – Stop',
   pressurePlan: 'Slow – Link – Stop',
+  hypnosisMode: 'bedtime',
+  hypnosisMinutes: 10,
+  hypnosisRate: 0.8,
+  noise: 'brown',
+  noiseVolume: 0.25,
 }
+
+const oneOf = <T>(options: readonly T[], v: unknown, fallback: T): T => (options.includes(v as T) ? (v as T) : fallback)
+
+const numIn = (v: unknown, min: number, max: number, fallback: number) =>
+  typeof v === 'number' && Number.isFinite(v) ? Math.min(max, Math.max(min, v)) : fallback
 
 const text = (v: unknown, fallback: string) => (typeof v === 'string' && v.trim() ? v : fallback)
 
@@ -49,13 +67,15 @@ export function normalizeSettings(raw: unknown): Settings {
     reps: intIn(r.reps, 1, 100, DEFAULT_SETTINGS.reps),
     deckReps: intIn(r.deckReps, 1, 20, DEFAULT_SETTINGS.deckReps),
     theme: THEMES.includes(r.theme as Theme) ? (r.theme as Theme) : DEFAULT_SETTINGS.theme,
-    sleepVolume:
-      typeof r.sleepVolume === 'number' && Number.isFinite(r.sleepVolume)
-        ? clamp(r.sleepVolume, 0.02, 1)
-        : DEFAULT_SETTINGS.sleepVolume,
-    sleepMinutes: SLEEP_MINUTES.includes(r.sleepMinutes as 0) ? (r.sleepMinutes as number) : DEFAULT_SETTINGS.sleepMinutes,
+    sleepVolume: numIn(r.sleepVolume, 0.02, 1, DEFAULT_SETTINGS.sleepVolume),
+    sleepMinutes: oneOf<number>(SLEEP_MINUTES, r.sleepMinutes, DEFAULT_SETTINGS.sleepMinutes),
     generalPlan: text(r.generalPlan, DEFAULT_SETTINGS.generalPlan),
     pressurePlan: text(r.pressurePlan, DEFAULT_SETTINGS.pressurePlan),
+    hypnosisMode: oneOf(['bedtime', 'daytime'] as const, r.hypnosisMode, DEFAULT_SETTINGS.hypnosisMode),
+    hypnosisMinutes: oneOf(HYPNOSIS_LENGTHS, r.hypnosisMinutes, 10),
+    hypnosisRate: numIn(r.hypnosisRate, 0.5, 1.2, DEFAULT_SETTINGS.hypnosisRate),
+    noise: oneOf(NOISE_TYPES, r.noise, DEFAULT_SETTINGS.noise),
+    noiseVolume: numIn(r.noiseVolume, 0.02, 1, DEFAULT_SETTINGS.noiseVolume),
   }
 }
 

@@ -28,12 +28,20 @@ describe('normalizeSettings', () => {
       sleepMinutes: 30,
       generalPlan: 'Pronounce – Smile – Stop',
       pressurePlan: 'Hum – Link – Stop',
+      hypnosisMode: 'daytime' as const,
+      hypnosisMinutes: 20,
+      hypnosisRate: 0.7,
+      noise: 'white' as const,
+      noiseVolume: 0.4,
     }
     expect(normalizeSettings(s)).toEqual(s)
   })
 
-  it('rejects unknown sleep timers and clamps sleep volume', () => {
+  it('rejects unknown options and clamps ranges', () => {
     expect(normalizeSettings({ sleepMinutes: 45, sleepVolume: 5 })).toMatchObject({ sleepMinutes: 0, sleepVolume: 1 })
+    expect(
+      normalizeSettings({ hypnosisMode: 'nap', hypnosisMinutes: 15, hypnosisRate: 3, noise: 'pink', noiseVolume: -1 }),
+    ).toMatchObject({ hypnosisMode: 'bedtime', hypnosisMinutes: 10, hypnosisRate: 1.2, noise: 'brown', noiseVolume: 0.02 })
   })
 })
 

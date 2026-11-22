@@ -42,9 +42,18 @@ export function watchVoices(cb: () => void): () => void {
 export interface SpeakOptions {
   voiceURI: string | null
   rate: number
+  volume?: number
 }
 
-export function speak(text: string, { voiceURI, rate }: SpeakOptions): Promise<void> {
+/** iOS only allows speech that starts from a tap; call this inside the tap handler before speaking later. */
+export function unlockSpeech() {
+  if (!speechSupported) return
+  const u = new SpeechSynthesisUtterance(' ')
+  u.volume = 0
+  speechSynthesis.speak(u)
+}
+
+export function speak(text: string, { voiceURI, rate, volume = 1 }: SpeakOptions): Promise<void> {
   if (!speechSupported) return Promise.resolve()
   speechSynthesis.cancel()
   return new Promise((resolve) => {
@@ -54,6 +63,7 @@ export function speak(text: string, { voiceURI, rate }: SpeakOptions): Promise<v
     if (voice) u.voice = voice
     u.lang = voice?.lang ?? 'en-US'
     u.rate = rate
+    u.volume = volume
     u.onend = u.onerror = () => resolve()
     speechSynthesis.speak(u)
   })

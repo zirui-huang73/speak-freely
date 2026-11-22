@@ -83,6 +83,28 @@ it('renders the crutches page and all three drills', async () => {
   expect(el.textContent).toContain('60s')
 })
 
+it('starts and ends a hypnosis session', async () => {
+  const el = document.createElement('div')
+  document.body.append(el)
+  window.location.hash = '#/hypnosis'
+  await act(async () => createRoot(el).render(<App />))
+  await wait(() => !!el.textContent?.includes('Start 10-minute bedtime session'))
+
+  const click = async (label: string) => {
+    const b = [...el.querySelectorAll('button')].find((x) => x.textContent?.trim() === label)!
+    await act(async () => b.click())
+  }
+  await click('Start 10-minute bedtime session')
+  expect(el.textContent).toContain('Find a comfortable position')
+  expect(el.textContent).toMatch(/about \d+ min left/)
+  await click('Pause')
+  expect(el.textContent).toContain('Resume')
+
+  window.confirm = () => true
+  await click('End')
+  expect(el.textContent).not.toContain('min left')
+})
+
 it('runs a full affirmation session and marks it done on Today', async () => {
   const el = document.createElement('div')
   document.body.append(el)
