@@ -17,8 +17,21 @@ describe('normalizeSettings', () => {
   })
 
   it('keeps valid values', () => {
-    const s = { name: 'Zirui', voiceURI: 'Samantha', rate: 1.1, reps: 30, deckReps: 5, theme: 'dark' as const }
+    const s = {
+      name: 'Zirui',
+      voiceURI: 'Samantha',
+      rate: 1.1,
+      reps: 30,
+      deckReps: 5,
+      theme: 'dark' as const,
+      sleepVolume: 0.3,
+      sleepMinutes: 30,
+    }
     expect(normalizeSettings(s)).toEqual(s)
+  })
+
+  it('rejects unknown sleep timers and clamps sleep volume', () => {
+    expect(normalizeSettings({ sleepMinutes: 45, sleepVolume: 5 })).toMatchObject({ sleepMinutes: 0, sleepVolume: 1 })
   })
 })
 

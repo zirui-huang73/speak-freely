@@ -3,6 +3,7 @@ import { ChevronIcon } from '../../app/icons'
 import { PageHeader } from '../../app/ui'
 
 const ITEMS = [
+  { to: '/recordings', label: 'My Recordings', hint: 'Monotone and Animated versions, sleep playback' },
   { to: '/more/settings', label: 'Settings', hint: 'Name, voice, repetitions, theme' },
   { label: 'My Speech Plan Card', hint: 'Coming in step 7' },
   { label: 'Export / Import', hint: 'Coming in step 7' },

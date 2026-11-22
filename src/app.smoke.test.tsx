@@ -37,6 +37,23 @@ it('renders cards, picker and deck', async () => {
   expect(el.textContent).toContain('Say it out loud, then tap')
 })
 
+it('renders recordings, recorder intro and sleep pages without recordings', async () => {
+  const el = document.createElement('div')
+  document.body.append(el)
+  window.location.hash = '#/recordings'
+  await act(async () => createRoot(el).render(<App />))
+  await wait(() => (el.textContent?.match(/Not recorded yet/g) ?? []).length === 2)
+  expect(el.textContent).toContain('Sleep Playback')
+
+  window.location.hash = '#/record/monotone'
+  await wait(() => !!el.textContent?.includes('Start recording'))
+  expect(el.textContent).toContain('Monotone recording')
+
+  window.location.hash = '#/sleep'
+  await wait(() => !!el.textContent?.includes('Record your Monotone version'))
+  expect(el.textContent).toContain('No recording yet.')
+})
+
 it('runs a full affirmation session and marks it done on Today', async () => {
   const el = document.createElement('div')
   document.body.append(el)

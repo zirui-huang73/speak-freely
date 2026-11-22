@@ -10,7 +10,11 @@ export interface Settings {
   reps: number
   deckReps: number
   theme: Theme
+  sleepVolume: number
+  sleepMinutes: number
 }
+
+export const SLEEP_MINUTES = [30, 60, 0] as const
 
 export const DEFAULT_SETTINGS: Settings = {
   name: '',
@@ -19,6 +23,8 @@ export const DEFAULT_SETTINGS: Settings = {
   reps: 20,
   deckReps: 3,
   theme: 'system',
+  sleepVolume: 0.15,
+  sleepMinutes: 0,
 }
 
 const KEY = 'settings'
@@ -37,6 +43,11 @@ export function normalizeSettings(raw: unknown): Settings {
     reps: intIn(r.reps, 1, 100, DEFAULT_SETTINGS.reps),
     deckReps: intIn(r.deckReps, 1, 20, DEFAULT_SETTINGS.deckReps),
     theme: THEMES.includes(r.theme as Theme) ? (r.theme as Theme) : DEFAULT_SETTINGS.theme,
+    sleepVolume:
+      typeof r.sleepVolume === 'number' && Number.isFinite(r.sleepVolume)
+        ? clamp(r.sleepVolume, 0.02, 1)
+        : DEFAULT_SETTINGS.sleepVolume,
+    sleepMinutes: SLEEP_MINUTES.includes(r.sleepMinutes as 0) ? (r.sleepMinutes as number) : DEFAULT_SETTINGS.sleepMinutes,
   }
 }
 

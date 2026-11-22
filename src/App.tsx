@@ -9,6 +9,9 @@ import { MorePage } from './features/more/MorePage'
 import { SettingsPage } from './features/more/SettingsPage'
 import { PracticeProvider } from './features/practice/PracticeProvider'
 import { SessionPage } from './features/practice/SessionPage'
+import { RecorderPage } from './features/recordings/RecorderPage'
+import { RecordingsPage } from './features/recordings/RecordingsPage'
+import { SleepPage } from './features/recordings/SleepPage'
 import { SettingsProvider } from './features/settings/SettingsProvider'
 import { TodayPage } from './features/today/TodayPage'
 
@@ -26,9 +29,12 @@ export default function App() {
                 <Route path="hypnosis" element={<HypnosisPage />} />
                 <Route path="more" element={<MorePage />} />
                 <Route path="more/settings" element={<SettingsPage />} />
+                <Route path="recordings" element={<RecordingsPage />} />
               </Route>
               <Route path="deck" element={<DeckPage />} />
               <Route path="session/:slot" element={<SessionPage />} />
+              <Route path="record/:kind" element={<RecorderPage />} />
+              <Route path="sleep" element={<SleepPage />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </HashRouter>

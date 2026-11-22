@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { CheckIcon, LockIcon } from '../../app/icons'
+import { CheckIcon, LockIcon, MoonIcon, PlayIcon } from '../../app/icons'
 import { Card, PageHeader } from '../../app/ui'
 import { CAPRIO_QUOTE, LOCKED_SLOTS } from '../../content/affirmations'
 import { fillName } from '../../lib/library'
@@ -91,6 +91,21 @@ export function TodayPage() {
             About 20 minutes: breathe, Caprio's words, then Today's 10 × {settings.reps}.
           </p>
         </Card>
+
+        <div className="grid grid-cols-2 gap-3">
+          <Link
+            to="/recordings"
+            className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white p-4 font-medium shadow-sm hover:border-teal-600 dark:border-slate-800 dark:bg-slate-900"
+          >
+            <PlayIcon className="size-5 text-teal-700 dark:text-teal-300" /> My Recordings
+          </Link>
+          <Link
+            to="/sleep"
+            className="flex items-center gap-3 rounded-2xl bg-slate-900 p-4 font-medium text-slate-100 shadow-sm hover:bg-slate-800 dark:bg-slate-800"
+          >
+            <MoonIcon className="size-5 text-indigo-300" /> Sleep Playback
+          </Link>
+        </div>
 
         <Card>
           <div className="flex items-baseline justify-between">
