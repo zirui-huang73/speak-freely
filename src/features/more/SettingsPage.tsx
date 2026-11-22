@@ -2,13 +2,36 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Card, PageHeader } from '../../app/ui'
 import { THEMES } from '../../lib/settings'
-import { englishVoices, onVoicesChanged, speak, speechSupported } from '../../lib/speech'
+import { englishVoices, speak, speechSupported, voiceQuality, watchVoices } from '../../lib/speech'
 import { useSettings } from '../settings/settingsContext'
 
 function useEnglishVoices() {
   const [voices, setVoices] = useState(englishVoices)
-  useEffect(() => onVoicesChanged(() => setVoices(englishVoices())), [])
+  useEffect(() => watchVoices(() => setVoices(englishVoices())), [])
   return voices
+}
+
+const QUALITY_LABEL = ['', ' · online', ' · enhanced', ' · natural']
+
+function BetterVoicesHelp() {
+  return (
+    <details className="rounded-xl bg-amber-50 p-3 text-sm text-amber-900 dark:bg-amber-950 dark:text-amber-200">
+      <summary className="cursor-pointer font-medium">Voices sound robotic? Get natural ones (free)</summary>
+      <ul className="mt-2 list-disc space-y-1.5 pl-5">
+        <li>
+          <b>Mac:</b> System Settings → Accessibility → Spoken Content → System voice → Manage Voices… → English →
+          download a <i>Premium</i> or <i>Enhanced</i> voice (e.g. Ava, Zoe, Evan). Then restart the browser.
+        </li>
+        <li>
+          <b>iPhone:</b> Settings → Accessibility → Spoken Content → Voices → English → download a <i>Premium</i> or{' '}
+          <i>Enhanced</i> voice. Then reopen Safari.
+        </li>
+        <li>
+          <b>Microsoft Edge</b> (desktop) has very natural online voices built in, listed as “… Online (Natural)”.
+        </li>
+      </ul>
+    </details>
+  )
 }
 
 const label = 'block text-sm font-medium text-slate-600 dark:text-slate-300'
@@ -71,14 +94,16 @@ export function SettingsPage() {
                   value={settings.voiceURI ?? ''}
                   onChange={(e) => update({ voiceURI: e.target.value || null })}
                 >
-                  <option value="">System default</option>
+                  <option value="">Best available</option>
                   {voices.map((v) => (
                     <option key={v.voiceURI} value={v.voiceURI}>
-                      {v.name} ({v.lang})
+                      {v.name} ({v.lang}){QUALITY_LABEL[voiceQuality(v)]}
                     </option>
                   ))}
                 </select>
+                <p className="mt-1 text-xs text-slate-500">{voices.length} English voices found in this browser.</p>
               </div>
+              {!voices.some((v) => voiceQuality(v) >= 2) && <BetterVoicesHelp />}
               <div>
                 <label htmlFor="rate" className={label}>
                   Speed: {settings.rate.toFixed(2)}×
