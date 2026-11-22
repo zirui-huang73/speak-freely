@@ -36,3 +36,33 @@ it('renders cards, picker and deck', async () => {
   expect(el.textContent).toContain('1 / 25')
   expect(el.textContent).toContain('Say it out loud, then tap')
 })
+
+it('runs a full affirmation session and marks it done on Today', async () => {
+  const el = document.createElement('div')
+  document.body.append(el)
+  window.location.hash = '#/session/morning'
+  await act(async () => createRoot(el).render(<App />))
+  await wait(() => !!el.textContent?.includes('Breathe'))
+
+  const click = async (label: string) => {
+    const b = [...el.querySelectorAll('button')].find((x) => x.textContent?.trim() === label)!
+    await act(async () => b.click())
+  }
+  await click('Skip')
+  expect(el.textContent).toContain('Say this out loud first')
+  await click('I said it')
+  expect(el.textContent).toContain('Affirmation 1 of 10')
+
+  const card = el.querySelector('[role="button"]') as HTMLElement
+  for (let i = 0; i < 20; i++) await act(async () => card.click())
+  expect(el.textContent).toContain('Well done!')
+  await wait(() => !!el.textContent?.includes('Affirmation 2 of 10'))
+
+  for (let i = 0; i < 9; i++) await click('Skip')
+  expect(el.textContent).toContain('Morning session complete')
+  expect(el.textContent).toContain('20 repetitions')
+
+  window.location.hash = '#/'
+  await wait(() => !!el.textContent?.includes('Affirmation sessions'))
+  expect(el.textContent).toContain('Done at')
+})

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import { ChevronIcon, ChevronLeftIcon, HeartIcon, SpeakerIcon, XIcon } from '../../app/icons'
+import { CheckIcon, ChevronIcon, ChevronLeftIcon, HeartIcon, SpeakerIcon, XIcon } from '../../app/icons'
 import { CATEGORIES } from '../../content/affirmations'
 import { fillName, filterCards, shuffle, type CardFilter } from '../../lib/library'
 import { speak, stopSpeaking } from '../../lib/speech'
@@ -101,8 +101,10 @@ export function DeckPage() {
     return (
       <div className="grid min-h-dvh place-items-center p-6 text-center">
         <div>
-          <p className="text-5xl">🎉</p>
-          <h1 className="mt-4 text-3xl font-bold">Deck complete</h1>
+          <div className="mx-auto grid size-20 place-items-center rounded-full bg-teal-600 text-white">
+            <CheckIcon className="size-10" />
+          </div>
+          <h1 className="mt-5 text-3xl font-bold">Deck complete</h1>
           <p className="mt-2 text-slate-500">
             {deck.length} cards · {total} repetitions out loud
           </p>
