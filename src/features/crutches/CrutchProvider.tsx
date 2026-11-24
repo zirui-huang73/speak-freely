@@ -14,6 +14,10 @@ export function CrutchProvider({ children }: { children: ReactNode }) {
         addCount: (n) => mutate((d) => ({ ...d, counts: { ...d.counts, [n]: (d.counts[n] ?? 0) + 1 } })),
         addWord: (word) => mutate((d) => normalizeCrutchData({ ...d, myWords: [...d.myWords, word] })),
         removeWord: (word) => mutate((d) => ({ ...d, myWords: d.myWords.filter((w) => w !== word) })),
+        addSentence: (text) => mutate((d) => normalizeCrutchData({ ...d, mySentences: [...d.mySentences, text] })),
+        updateSentence: (old, text) =>
+          mutate((d) => normalizeCrutchData({ ...d, mySentences: d.mySentences.map((x) => (x === old ? text : x)) })),
+        removeSentence: (text) => mutate((d) => ({ ...d, mySentences: d.mySentences.filter((x) => x !== text) })),
       },
     [data, mutate],
   )

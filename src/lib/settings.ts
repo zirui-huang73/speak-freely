@@ -20,9 +20,12 @@ export interface Settings {
   hypnosisRate: number
   noise: NoiseType
   noiseVolume: number
+  paceRate: number
+  paceTick: boolean
 }
 
 export const SLEEP_MINUTES = [30, 60, 0] as const
+export const PACE_RATES = [1.5, 2, 2.5, 3, 3.5] as const
 export const NOISE_TYPES = ['off', 'brown', 'white'] as const
 export type NoiseType = (typeof NOISE_TYPES)[number]
 
@@ -42,6 +45,8 @@ export const DEFAULT_SETTINGS: Settings = {
   hypnosisRate: 0.8,
   noise: 'brown',
   noiseVolume: 0.25,
+  paceRate: 2,
+  paceTick: false,
 }
 
 const oneOf = <T>(options: readonly T[], v: unknown, fallback: T): T => (options.includes(v as T) ? (v as T) : fallback)
@@ -78,6 +83,8 @@ export function normalizeSettings(raw: unknown): Settings {
     hypnosisRate: numIn(r.hypnosisRate, 0.5, 1.2, DEFAULT_SETTINGS.hypnosisRate),
     noise: oneOf(NOISE_TYPES, r.noise, DEFAULT_SETTINGS.noise),
     noiseVolume: numIn(r.noiseVolume, 0.02, 1, DEFAULT_SETTINGS.noiseVolume),
+    paceRate: oneOf<number>(PACE_RATES, r.paceRate, DEFAULT_SETTINGS.paceRate),
+    paceTick: r.paceTick === true,
   }
 }
 

@@ -5,9 +5,10 @@ export interface CrutchData {
   week: number
   counts: Record<string, number>
   myWords: string[]
+  mySentences: string[]
 }
 
-export const defaultCrutchData = (): CrutchData => ({ week: 1, counts: {}, myWords: [] })
+export const defaultCrutchData = (): CrutchData => ({ week: 1, counts: {}, myWords: [], mySentences: [] })
 
 export const drillPath = (n: number) => (n <= 8 ? `/drill/words?c=${n}` : n === 13 ? '/drill/free' : '/drill/linking')
 
@@ -58,6 +59,15 @@ export function parseSentence(sentence: string): Phrase[] {
   return phrases
 }
 
+/** Rough English syllable count from spelling (at least 1). */
+export function countSyllables(word: string): number {
+  let w = word.toLowerCase().replace(/[^a-z]/g, '')
+  if (!w) return 0
+  if (w.length <= 3) return 1
+  w = w.replace(/(?:[^laeiouy]es|[^tdaeiouy]ed|[^laeiouy]e)$/, (m) => m[0]).replace(/^y/, '')
+  return Math.max(1, (w.match(/[aeiouy]+/g) ?? []).length)
+}
+
 export function pickOther<T>(items: T[], current: T | undefined, random: () => number = Math.random): T {
   if (items.length <= 1) return items[0]
   let next = current
@@ -73,10 +83,14 @@ export function normalizeCrutchData(raw: unknown): CrutchData {
   if (r.counts && typeof r.counts === 'object') {
     for (const [k, v] of Object.entries(r.counts)) if (typeof v === 'number' && v > 0) counts[k] = Math.floor(v)
   }
-  const words = Array.isArray(r.myWords)
-    ? r.myWords.filter((w): w is string => typeof w === 'string').map((w) => w.trim()).filter(Boolean)
-    : []
-  return { week: validCrutch(r.week) ? r.week : 1, counts, myWords: [...new Set(words)] }
+  const strings = (v: unknown) =>
+    Array.isArray(v) ? [...new Set(v.filter((w): w is string => typeof w === 'string').map((w) => w.trim()).filter(Boolean))] : []
+  return {
+    week: validCrutch(r.week) ? r.week : 1,
+    counts,
+    myWords: strings(r.myWords),
+    mySentences: strings(r.mySentences),
+  }
 }
 
 const KEY = 'crutches'

@@ -33,6 +33,8 @@ describe('normalizeSettings', () => {
       hypnosisRate: 0.7,
       noise: 'white' as const,
       noiseVolume: 0.4,
+      paceRate: 3,
+      paceTick: true,
     }
     expect(normalizeSettings(s)).toEqual(s)
   })

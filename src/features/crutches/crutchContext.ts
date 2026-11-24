@@ -7,6 +7,9 @@ export interface CrutchContextValue {
   addCount: (n: number) => void
   addWord: (word: string) => void
   removeWord: (word: string) => void
+  addSentence: (text: string) => void
+  updateSentence: (old: string, text: string) => void
+  removeSentence: (text: string) => void
 }
 
 export const CrutchContext = createContext<CrutchContextValue | null>(null)

@@ -78,6 +78,25 @@ it('renders the crutches page and all three drills', async () => {
   expect(el.textContent).toContain('Slow – Link – Stop')
   expect(el.textContent).toContain('‿')
 
+  await click('Meeting')
+  expect(el.textContent).toMatch(/‿/)
+  await click('Pace')
+  expect(el.textContent).toContain('Syllables / second')
+  expect(el.querySelectorAll('[aria-label="Syllable pace"] span').length).toBeGreaterThan(0)
+  await click('Start')
+  expect(el.textContent).toContain('One syllable per dot')
+  await click('Mine')
+  expect(el.textContent).toContain('No sentences here yet')
+  const ta = el.querySelector('textarea[aria-label="New sentence"]') as HTMLTextAreaElement
+  const setTa = Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value')!.set!
+  await act(async () => {
+    setTa.call(ta, 'Quick update || two things.')
+    ta.dispatchEvent(new Event('input', { bubbles: true }))
+  })
+  expect(el.textContent).toContain('Preview: Quick‿update')
+  await click('Add sentence')
+  await wait(() => !!el.textContent?.includes('My sentences (1)'))
+
   window.location.hash = '#/drill/free'
   await wait(() => !!el.textContent?.includes('No crutch at all'))
   expect(el.textContent).toContain('60s')
